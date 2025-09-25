@@ -16,7 +16,7 @@ export default function OpinionForm() {
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
-        setIsSubmitting(true);  // start submitting
+        setIsSubmitting(true);  
         try {
             const res = await fetch('/api/submit-opinion', {
                 method: 'POST',
@@ -26,13 +26,12 @@ export default function OpinionForm() {
             if (res.ok) {
                 setSubmitted(true);
             } else {
-                // Optionally handle server errors here
                 alert('Failed to submit. Please try again.');
             }
         } catch (error) {
             alert('An error occurred. Please try again.');
         } finally {
-            setIsSubmitting(false);  // end submitting
+            setIsSubmitting(false);  
         }
     };
 
