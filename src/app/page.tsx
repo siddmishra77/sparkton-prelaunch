@@ -1,103 +1,129 @@
-import Image from "next/image";
+'use client';
+
+import Link from 'next/link';
+import { motion } from 'framer-motion';
+import { useEffect, useState } from 'react';
 
 export default function Home() {
-  return (
-    <div className="font-sans grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20">
-      <main className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="font-mono list-inside list-decimal text-sm/6 text-center sm:text-left">
-          <li className="mb-2 tracking-[-.01em]">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] font-mono font-semibold px-1 py-0.5 rounded">
-              src/app/page.tsx
-            </code>
-            .
-          </li>
-          <li className="tracking-[-.01em]">
-            Save and see your changes instantly.
-          </li>
-        </ol>
+  const [showSparkles, setShowSparkles] = useState(false);
+  const [count, setCount] = useState<number | null>(null);
 
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:w-auto"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 w-full sm:w-auto md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
+  useEffect(() => {
+    const timeout = setTimeout(() => setShowSparkles(true), 1000);
+    return () => clearTimeout(timeout);
+  }, []);
+
+  useEffect(() => {
+    async function fetchCount() {
+      try {
+        const res = await fetch('/api/opinion-count');
+        const data = await res.json();
+        setCount(data.count);
+      } catch (err) {
+        console.error('Failed to fetch opinion count:', err);
+      }
+    }
+    fetchCount();
+  }, []);
+
+  return (
+    <main className="relative min-h-screen bg-gradient-to-br px-4 from-[#0b0f3a] via-[#1a1a3c] to-[#0d081f] text-white overflow-hidden">
+      {/* Header */}
+      <header className="flex items-center justify-center px-4 md:px-12 py-4 backdrop-blur-sm bg-white/5 rounded-b-xl shadow-md sticky top-0 z-50">
+        <div className="flex items-center gap-3">
+          <img
+            src="/logo.jpg"
+            alt="Logo"
+            className="w-10 h-10 object-cover rounded-full ring-2 ring-yellow-400"
+          />
+          <h1 className="text-xl md:text-2xl font-extrabold tracking-widest text-yellow-400 drop-shadow-lg select-none">
+            SPARKTON
+          </h1>
         </div>
-      </main>
-      <footer className="row-start-3 flex gap-[24px] flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
+      </header>
+
+      {/* Background Shapes */}
+      <div className="absolute inset-0 overflow-hidden -z-10">
+        <div className="absolute top-1/3 left-1/4 w-[220px] h-[220px] bg-pink-600 opacity-30 blur-3xl rounded-full animate-pulse" />
+        <div className="absolute bottom-1/4 right-1/4 w-[320px] h-[320px] bg-indigo-700 opacity-25 blur-3xl rounded-full animate-ping" />
+      </div>
+
+      {/* Main Content */}
+      <div className="flex flex-col items-center justify-center text-center px-6 py-16 h-[90vh] max-w-4xl mx-auto">
+        <motion.h1
+          initial={{ opacity: 0, y: -30 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8 }}
+          className="text-4xl sm:text-5xl md:text-6xl font-extrabold mb-6 leading-tight tracking-tight"
+          style={{
+            textShadow:
+              '0 0 2px #000, 0 0 5px #000, 0 0 5px #000',
+          }}
         >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
+          Launching Soon
+          <br />
+          <span className="text-yellow-400">Your New Learning Hub!</span>
+        </motion.h1>
+
+        <motion.p
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.5, duration: 0.8 }}
+          className="mb-10 text-base sm:text-lg md:text-xl max-w-2xl leading-relaxed text-yellow-100/90 drop-shadow-md"
         >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
+          Be part of our journey. Share your thoughts and help us shape the future of education.
+        </motion.p>
+
+        <motion.div
+          whileHover={{ scale: 1.1, }}
+          whileTap={{ scale: 0.95 }}
+          className="z-10"
         >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
-    </div>
+          <Link href="/opinion">
+            <button
+              className="px-10 py-4 bg-yellow-500 text-black font-bold text-lg rounded-full shadow-xl
+                         hover:bg-yellow-400 hover:shadow-[0_0_15px_3px_rgba(251,191,36,0.7)]
+                         transition duration-300 ease-in-out cursor-pointer select-none"
+            >
+              🚀 I&apos;m Excited!
+            </button>
+          </Link>
+        </motion.div>
+
+        {count !== null && (
+          <motion.p
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.6, duration: 0.8 }}
+            className="mt-8 text-base sm:text-lg md:text-xl text-yellow-300 drop-shadow-lg"
+          >
+            {count === 0
+              ? "Nobody is excited 😞"
+              : `${count} ${count === 1 ? 'person is' : 'people are'} already excited! 🥳`}          </motion.p>
+        )}
+
+        {/* Sparkles */}
+        {showSparkles && (
+          <div className="absolute pointer-events-none select-none">
+            {/* Smaller screens */}
+            <div className="text-2xl sm:text-3xl md:hidden">
+              <div className="absolute top-12 left-20 animate-pulse">✨</div>
+              <div className="absolute top-28 right-20 animate-pulse">✨</div>
+
+              <div className="absolute bottom-36 right-38 animate-bounce">🎊</div>
+              <div className="absolute bottom-12 left-34 animate-pulse">🌟</div>
+            </div>
+
+            {/* Medium and up */}
+            <div className="hidden md:block text-5xl">
+              <div className="absolute top-16 left-14 animate-pulse">✨</div>
+              <div className="absolute bottom-20 right-14 animate-bounce">🎊</div>
+              <div className="absolute top-28 right-20 animate-pulse">🌟</div>
+            </div>
+          </div>
+        )}
+
+      </div>
+    </main>
   );
 }
