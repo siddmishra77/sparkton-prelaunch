@@ -5,10 +5,10 @@ export async function POST(req: Request) {
   try {
     const body = await req.json();
 
-    const { name, email, message } = body;
+    const { name, email, message, age, agreeUpdates } = body;
 
-    if (!name || !email || !message) {
-      return NextResponse.json({ error: 'Missing fields' }, { status: 400 });
+    if (!name || !email || !message || typeof agreeUpdates !== 'boolean') {
+      return NextResponse.json({ error: 'Missing or invalid fields' }, { status: 400 });
     }
 
     const newOpinion = await prisma.opinion.create({
@@ -16,6 +16,8 @@ export async function POST(req: Request) {
         name,
         email,
         message,
+        age: age ? Number(age) : null,
+        agreeUpdates,
       },
     });
 

@@ -15,9 +15,11 @@ datasource db {
 }
 
 model Opinion {
-  id        String   @id @default(cuid())
-  name      String
-  email     String
-  message   String
-  createdAt DateTime @default(now())
+  id           String   @id @default(cuid())
+  name         String
+  email        String
+  age          Int?        
+  agreeUpdates Boolean   
+  message      String
+  createdAt    DateTime @default(now())
 }
